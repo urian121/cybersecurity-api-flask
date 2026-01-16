@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, render_template, redirect, url_for
+from services.logger import configure_logging
 from flask_jwt_extended import (
     JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies, unset_jwt_cookies
 )
@@ -24,11 +25,13 @@ app.config["JWT_COOKIE_SECURE"] = False
 
 
 jwt = JWTManager(app) # Inicializa el manejador de tokens JWT para la aplicación Flask
+configure_logging(app)
 
 # Base de datos simulada
 users_db = {
     "usuario":"dev@gmail.com", "password":"4825"
 }
+
 
 def responder(msg, status):
     """Simplifica la respuesta según si es API o Navegador"""
@@ -57,6 +60,7 @@ def login():
     token = create_access_token(identity=email)
 
     # 4. Respuesta de éxito
+    app.logger.info(f"login exitoso email={email}")
     if request.is_json:
         return jsonify(access_token=token)
     
@@ -73,17 +77,19 @@ def index_page():
 @jwt_required(locations=["cookies"]) # Protege la ruta: requiere token válido en la cookie
 def dashboard_page():
     user = get_jwt_identity()
-    print(user)
+    app.logger.info(f"dashboard acceso user={user}")
     return render_template("dashboard/index.html", user=user)
 
 @app.route("/logout")
 def logout():
     resp = redirect(url_for("index_page"))
     unset_jwt_cookies(resp)
+    app.logger.info("logout")
     return resp
 
 @app.errorhandler(404)
 def not_found(error):
+    app.logger.warning(f"404 {request.path}")
     return render_template("404.html"), 404
 
 
