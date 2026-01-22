@@ -1,4 +1,4 @@
-# Cybersecurity API (Flask)
+# Flask JWT Auth API — Login Web + JSON, Dashboard Protegido
 
 Proyecto mínimo de autenticación JWT con Flask y vista en Bootstrap 5. Incluye login (form y JSON), dashboard protegido por cookie JWT, manejo de 404 y logging a archivo.
 
