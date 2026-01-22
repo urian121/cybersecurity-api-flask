@@ -2,6 +2,8 @@
 
 Proyecto mínimo de autenticación JWT con Flask y vista en Bootstrap 5. Incluye login (form y JSON), dashboard protegido por cookie JWT, manejo de 404 y logging a archivo.
 
+![Preview](docs/preview.png)
+
 ## Stack
 - Python 3.11+
 - Flask 3.x, Flask-JWT-Extended 4.7.x, python-dotenv
